@@ -60,7 +60,11 @@ func write(cfg Config) error {
 	return nil
 }
 
-func (cfg Config) SetUser(user string) {
+func (cfg Config) SetUser(user string) error {
 	cfg.CurrentUser = user
-	write(cfg)
+	err := write(cfg)
+	if err != nil {
+		return err
+	}
+	return nil
 }

@@ -2,21 +2,38 @@ package main
 
 import (
 	"fmt"
+	"os"
 
+	"github.com/neeeb1/gator/internal/cli"
 	"github.com/neeeb1/gator/internal/config"
 )
 
 func main() {
 	cfg, err := config.Read()
 	if err != nil {
-		fmt.Errorf("error reading config: %v", err)
+		fmt.Printf("error reading config: %v\n", err)
+		return
 	}
 
-	cfg.SetUser("neeeb")
+	state := cli.State{
+		Config: cfg,
+	}
 
-	cfg, err = config.Read()
+	commands := cli.Commands{
+		Cmds: make(map[string]func(*cli.State, cli.Command) error),
+	}
+	commands.Register("login", cli.HandlerLogin)
+
+	args := os.Args
+
+	cmd := cli.Command{
+		Name:      args[1],
+		Arguments: args[2:],
+	}
+
+	err = commands.Run(&state, cmd)
 	if err != nil {
-		fmt.Errorf("error reading config: %v", err)
+		fmt.Printf("error running specified command: %v\n", err)
+		return
 	}
-	fmt.Println(cfg)
 }
