@@ -4,10 +4,12 @@ import (
 	"fmt"
 
 	"github.com/neeeb1/gator/internal/config"
+	"github.com/neeeb1/gator/internal/database"
 )
 
 type State struct {
-	Config config.Config
+	Config *config.Config
+	db     *database.Queries
 }
 
 type Command struct {
