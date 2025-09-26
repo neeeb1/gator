@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"context"
 	"fmt"
 )
 
@@ -11,7 +12,12 @@ func HandlerLogin(s *State, cmd Command) error {
 		return fmt.Errorf("expected 1 argument, but recieved %d", len(cmd.Arguments))
 	}
 
-	err := s.Config.SetUser(cmd.Arguments[0])
+	user, err := s.Db.GetUser(context.Background(), cmd.Arguments[0])
+	if err != nil {
+		return err
+	}
+
+	err = s.Config.SetUser(user.Name)
 	if err != nil {
 		return err
 	}
