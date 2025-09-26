@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 
+	_ "github.com/lib/pq"
 	"github.com/neeeb1/gator/internal/cli"
 	"github.com/neeeb1/gator/internal/config"
 )
@@ -16,7 +17,7 @@ func main() {
 	}
 
 	state := cli.State{
-		Config: cfg,
+		Config: &cfg,
 	}
 
 	commands := cli.Commands{
@@ -25,6 +26,10 @@ func main() {
 	commands.Register("login", cli.HandlerLogin)
 
 	args := os.Args
+	if len(args) < 2 {
+		fmt.Printf("error: not enough arguments\n")
+		os.Exit(1)
+	}
 
 	cmd := cli.Command{
 		Name:      args[1],
@@ -34,6 +39,6 @@ func main() {
 	err = commands.Run(&state, cmd)
 	if err != nil {
 		fmt.Printf("error running specified command: %v\n", err)
-		return
+		os.Exit(1)
 	}
 }
