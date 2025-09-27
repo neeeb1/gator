@@ -1,6 +1,7 @@
 package cli
 
 import (
+	"context"
 	"fmt"
 
 	"github.com/neeeb1/gator/internal/config"
@@ -38,4 +39,16 @@ func (c *Commands) Run(s *State, cmd Command) error {
 func (c *Commands) Register(name string, f func(*State, Command) error) error {
 	c.Cmds[name] = f
 	return nil
+}
+
+func MiddlewareLoggedIn(handler func(s *State, cmd Command, user database.User) error) func(*State, Command) error {
+	return func(s *State, cmd Command) error {
+
+		u, err := s.Db.GetUser(context.Background(), s.Config.CurrentUser)
+		if err != nil {
+			return err
+		}
+
+		return handler(s, cmd, u)
+	}
 }

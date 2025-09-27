@@ -9,14 +9,9 @@ import (
 	"github.com/neeeb1/gator/internal/database"
 )
 
-func HandlerFollow(s *State, cmd Command) error {
+func HandlerFollow(s *State, cmd Command, u database.User) error {
 	if len(cmd.Arguments) != 1 {
 		return fmt.Errorf("expected 1 arguments, but got %d", len(cmd.Arguments))
-	}
-
-	u, err := s.Db.GetUser(context.Background(), s.Config.CurrentUser)
-	if err != nil {
-		return err
 	}
 
 	f, err := s.Db.GetFeed(context.Background(), cmd.Arguments[0])
