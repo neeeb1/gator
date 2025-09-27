@@ -6,7 +6,7 @@ import (
 )
 
 func HandlerFeeds(s *State, cmd Command) error {
-	if len(cmd.Arguments) > 0 {
+	if len(cmd.Arguments) != 0 {
 		return fmt.Errorf("expected no arguments, but got %d", len(cmd.Arguments))
 	}
 

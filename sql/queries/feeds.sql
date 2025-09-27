@@ -17,3 +17,7 @@ SELECT name, url, (
         WHERE id = user_id
     ) AS created_by
 FROM feeds;
+
+-- name: GetFeed :one
+SELECT * FROM feeds
+    WHERE url = $1;
