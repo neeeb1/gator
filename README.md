@@ -22,7 +22,7 @@ An example config file is included in this repository.
 #### Installation
 
 You can install this program with the Go install command:
-```go
+```
 go install github.com/neeeb1/gator@latest
 ```
 ## Usage
