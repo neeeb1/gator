@@ -17,8 +17,8 @@ func HandlerFollowing(s *State, cmd Command, u database.User) error {
 		return err
 	}
 
+	fmt.Printf("followed feeds for %s\n", u.Name)
 	for _, f := range feeds {
-		fmt.Printf("followed feeds for %s\n", u.Name)
 		fmt.Printf("* %s\n", f.FeedName)
 	}
 
