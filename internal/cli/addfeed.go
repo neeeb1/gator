@@ -9,17 +9,12 @@ import (
 	"github.com/neeeb1/gator/internal/database"
 )
 
-func HandlerAddFeed(s *State, cmd Command) error {
+func HandlerAddFeed(s *State, cmd Command, u database.User) error {
 	if len(cmd.Arguments) == 0 {
 		return fmt.Errorf("no arguments found")
 	}
 	if len(cmd.Arguments) != 2 {
 		return fmt.Errorf("expected 2 argument, but recieved %d", len(cmd.Arguments))
-	}
-
-	u, err := s.Db.GetUser(context.Background(), s.Config.CurrentUser)
-	if err != nil {
-		return err
 	}
 
 	params := database.CreateFeedParams{
