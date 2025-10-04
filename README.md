@@ -1,47 +1,98 @@
-# gator
+# Gator 🐊
+[![Go](https://img.shields.io/badge/Go-1.25+-blue.svg)](https://golang.org/)  
+[![Postgres](https://img.shields.io/badge/Postgres-15+-blueviolet.svg)](https://www.postgresql.org/)  
 
-## A Boot.Dev project
-The purpose of this project is to utilize Go and SQL to create an RSS feed aggregator in the cli.
+A **command-line RSS feed aggregator** built with Go and PostgreSQL.  
+Gator was built as a Boot.Dev project to demonstrate CLI design, SQL persistence, and working with external RSS feeds.  
 
-## Setup
+---
 
-#### Dependencies
-Requires Postgresql v15+ and Go v1.25+.
+## ✨ Features
 
+- User registration and login  
+- Add and manage RSS feeds  
+- Follow feeds per user  
+- Browse the latest posts from followed feeds  
+- Background feed aggregation at a set interval  
+- PostgreSQL persistence  
 
+---
 
-#### Config
-This program expectes to find a .gatorconfig.json file in your home directory (~/.gatorconfig.son). Currently, it doesn't generate this file automatically. 
+## 📦 Tech Stack
 
-The config file should contain two fields: 
-- "db_url": A link to your Postgresql database (i.e. "postgres://exampledb")
-- "current_user_string": The current user. This can be anything to start.
+- **Go** (≥ 1.25)  
+- **PostgreSQL** (≥ 15)  
+- **JSON Config** for user and database settings  
 
-An example config file is included in this repository.
+---
 
-#### Installation
+## ⚙️ Setup & Installation
 
-You can install this program with the Go install command:
-```
+```bash
+# Install via Go
 go install github.com/neeeb1/gator@latest
 ```
-## Usage
 
-Gator is an rss feed aggregator. You can add users, follow specific feeds for each user, and browser the latest posts form the feed.
+Create a `.gatorconfig.json` file in your home directory (`~/.gatorconfig.json`):
 
-Commands:
+```json
+{
+  "db_url": "postgres://user:password@localhost:5432/gator_db?sslmode=disable",
+  "current_user_string": "example-user"
+}
 ```
-register - adds a new user
-login - sets current user to a registered user
-users - lists all registered users
 
-addfeed - adds an rss feed with a name and url
-feeds - lists all available feeds
-follow - follow an already added feed for the current user
-following - list all feeds the current user is following
+> ⚠️ This file is not auto-generated. An example is included in this repo.  
 
-agg - fetches feeds on a provided frequency (e.g. 5s, 10s, 1m)
-browse - allows you to browse the latest N feeds that the current user is following
+---
 
-reset - \*DANGER\* removes all data from the database!
+## 🚀 Usage
+
+Gator is run entirely from the command line.  
+
+```bash
+gator <command> [options]
+```
+
+### 🔹 User Commands
+```bash
+gator register       # Add a new user
+gator login          # Set current user
+gator users          # List all users
+```
+
+### 🔹 Feed Commands
+```bash
+gator addfeed        # Add a new RSS feed (name + URL)
+gator feeds          # List all available feeds
+gator follow         # Follow a feed for the current user
+gator following      # List feeds current user is following
+```
+
+### 🔹 Aggregation & Browsing
+```bash
+gator agg Xs        # Fetch feeds every Xs
+gator browse Y      # Browse latest Y posts for current user
+```
+
+### 🔹 Danger Zone
+```bash
+gator reset          # ⚠️ Clears ALL data from the database
+```
+
+---
+
+## 🛠️ Database
+
+- PostgreSQL stores users, feeds, and subscriptions  
+- Simple schema designed for learning purposes  
+
+---
+
+## 🧪 Testing
+
+Run any available tests with:
+
+```bash
+go test ./...
 ```
